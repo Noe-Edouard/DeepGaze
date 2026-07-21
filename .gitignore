@@ -1,0 +1,10 @@
+# Python
+__pycache__/
+
+# Folders
+outputs/
+deepgaze/
+data/
+
+# Files
+TODO.md
