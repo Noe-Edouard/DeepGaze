@@ -12,3 +12,6 @@ TODO.md
 # Extension
 *.png
 *.jpg
+
+# macOS
+.DS_Store

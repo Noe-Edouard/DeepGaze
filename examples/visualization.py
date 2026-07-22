@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from helpers.visualizer import Visualizer
-# from saliency.deepgaze import DeepGaze
+from saliency.deepgaze import DeepGaze
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -77,31 +77,30 @@ visualizer = Visualizer(
 
 
 # Comparaison visible / infrarouge
-visualizer.compare_modalities_heatmaps(
-    visible_fixations_df=VISIBLE_FIXATIONS_CSV,
-    infrared_fixations_df=INFRARED_FIXATIONS_CSV,
-    save_dir=OUTPUT_DIR / "modalities_comparison",
-    sigma=35.0,
-    heatmap_alpha=0.45,
-    cmap="jet",
-    use_duration_weights=False,
-)
-
-
-# Comparaison DeepGaze / fixations humaines
-# from saliency.deepgaze import DeepGaze
-#
-# deepgaze_predictor = DeepGaze()
-#
-# visualizer.compare_deepgaze_human_heatmaps(
-#     fixations_df=INFRARED_FIXATIONS_CSV,
-#     deepgaze_predictor=deepgaze_predictor,
-#     modality="infrared",
-#     save_dir=OUTPUT_DIR / "compare_deepgaze_human_infrared",
-#     channel_mode="auto",
+# visualizer.compare_modalities_heatmaps(
+#     visible_fixations_df=VISIBLE_FIXATIONS_CSV,
+#     infrared_fixations_df=INFRARED_FIXATIONS_CSV,
+#     save_dir=OUTPUT_DIR / "human_modalities_comparison",
 #     sigma=35.0,
 #     heatmap_alpha=0.45,
 #     cmap="jet",
 #     use_duration_weights=False,
-#     normalize_for_display=True,
 # )
+
+
+# Comparaison DeepGaze / fixations humaines
+
+deepgaze_predictor = DeepGaze()
+
+visualizer.compare_deepgaze_human_heatmaps(
+    fixations_df=INFRARED_FIXATIONS_CSV,
+    deepgaze_predictor=deepgaze_predictor,
+    modality="infrared",
+    save_dir=OUTPUT_DIR / "deepgaze_human_comparison",
+    channel_mode="auto",
+    sigma=35.0,
+    heatmap_alpha=0.45,
+    cmap="jet",
+    use_duration_weights=False,
+    normalize_for_display=True,
+)

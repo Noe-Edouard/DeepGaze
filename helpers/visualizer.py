@@ -287,9 +287,9 @@ class Visualizer:
 
             h, w = image.shape[:2]
 
-            prediction = deepgaze_predictor.predict_image(image_path=image_path, channel_mode=channel_mode)
+            prediction = deepgaze_predictor.predict(image)
             deepgaze_map = self._prepare_saliency_for_display(
-                prediction.density, width=w, height=h, normalize=normalize_for_display
+                prediction, width=w, height=h, normalize=normalize_for_display
             )
 
             group_rescaled = self._rescale_to_loaded_image(group_img, w, h)
@@ -304,9 +304,7 @@ class Visualizer:
 
             self._imshow(axes[1], image)
             axes[1].imshow(reference_map, cmap=cmap, alpha=heatmap_alpha, interpolation="bilinear", vmin=0.0, vmax=1.0)
-            n_fix = len(group_img)
-            n_part = group_img["participant_id"].nunique()
-            axes[1].set_title(f"Human Saliency (fix={n_fix}, part={n_part})")
+            axes[1].set_title(f"Human Saliency")
             self._format_axis(axes[1], w, h)
 
             fig.suptitle(f"[{idx[0] + 1}/{len(pairs)}] {image_path.name}", fontsize=12)
@@ -402,10 +400,6 @@ class Visualizer:
         df["y_image"] = np.floor(
             y_stim * df["image_height"] / df["stimuli_height"]
         ).astype(int)
-
-        df["image_stem"] = df["image_name"].map(
-            self._get_image_stem
-        )
 
         return df
 
@@ -782,7 +776,3 @@ class Visualizer:
         draw()
         plt.show()
 
-    @staticmethod
-    def _get_image_stem(image_name: str) -> str:
-        name = str(image_name).strip().replace("\\", "/")
-        return Path(name).stem.strip().lower()
