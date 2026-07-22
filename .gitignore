@@ -8,3 +8,7 @@ data/
 
 # Files
 TODO.md
+
+# Extension
+*.png
+*.jpg
